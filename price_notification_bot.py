@@ -34,6 +34,7 @@ def lambda_handler(event, context):
         'body': json.dumps(get_message(total_billing, service_billings))}
 
 
+# 合計請求額取得を取得
 def get_total_billing(client) -> dict:
     (start_date, end_date) = get_total_cost_date_range()
     response = client.get_cost_and_usage(
@@ -54,6 +55,7 @@ def get_total_billing(client) -> dict:
     }
 
 
+# 各サービスの詳細請求金額を取得
 def get_service_billings(client) -> list:
     (start_date, end_date) = get_total_cost_date_range()
 
@@ -85,6 +87,7 @@ def get_service_billings(client) -> list:
     return billings
 
 
+# 請求金額取得対象期間を取得
 def get_total_cost_date_range() -> (str, str):
     start_date = get_begin_of_month()
     end_date = get_today()
@@ -131,14 +134,12 @@ def get_message(total_billing: dict, service_billings: list) -> dict:
     return payload
 
 
+# 実行月の1日を取得
 def get_begin_of_month() -> str:
     return date.today().replace(day=1).isoformat()
 
 
-def get_prev_day(prev: int) -> str:
-    return (date.today() - timedelta(days=prev)).isoformat()
-
-
+# 実行日を取得
 def get_today() -> str:
     return date.today().isoformat()
 
